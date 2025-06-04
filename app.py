@@ -67,7 +67,7 @@ if not st.session_state.done:
             st.session_state.chat.append({"role": "user", "content": user_input})
             st.session_state.answers.append(user_input)
             st.session_state.step += 1
-             st.session_state.trigger_next = True
+            st.session_state.trigger_next = True
 
     # ✅ 當回答完初始問題，觸發延伸提問
     elif not st.session_state.followup_added:
