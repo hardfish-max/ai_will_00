@@ -105,7 +105,10 @@ if st.session_state.generated:
     st.markdown("### 📝 你的遺囑草稿如下：")
     st.success(st.session_state.generated)
 
-# ✅ 最安全的位置 rerun（畫面更新完再觸發）
-if st.session_state.trigger_next:
+if (
+    st.session_state.trigger_next 
+    and not st.session_state.generated 
+    and not st.session_state.done
+):
     st.session_state.trigger_next = False
     st.experimental_rerun()
