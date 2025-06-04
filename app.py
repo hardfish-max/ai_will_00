@@ -66,7 +66,7 @@ if not st.session_state.done:
     elif len(st.session_state.questions) == len(initial_questions):
         # Chain of Thought：讓 AI 提出進一步提問
         summary = "\\n".join([f"{i+1}. {q}：{a}" for i, (q, a) in enumerate(zip(st.session_state.questions, st.session_state.answers))])
-        follow_prompt = f"以下是使用者關於遺囑的初步回答，請根據內容提出 1~2 個進一步的釐清或補充問題：\\n{summary}"
+        follow_prompt = f"以下是使用者關於遺囑的初步回答，請根據內容提出 1~2 個進一步的釐清或補充問題，用中文發問：\\n{summary}"
         followup = call_groq(follow_prompt)
         new_questions = [line.strip("-：• ") for line in followup.split("\\n") if line.strip()]
         st.session_state.questions.extend(new_questions)
@@ -95,4 +95,5 @@ if st.session_state.generated:
 # 控制重新載入安全觸發
 if st.session_state.trigger_next:
     st.session_state.trigger_next = False
-    st.experimental_rerun()
+    st.markdown("### 📝 你的遺囑草稿如下：")
+    st.success(st.session_state.generated)
