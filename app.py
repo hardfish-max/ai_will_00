@@ -105,10 +105,3 @@ if st.session_state.generated:
     st.markdown("### 📝 你的遺囑草稿如下：")
     st.success(st.session_state.generated)
 
-if (
-    st.session_state.trigger_next 
-    and not st.session_state.generated 
-    and not st.session_state.done
-):
-    st.session_state.trigger_next = False
-    st.experimental_rerun()
