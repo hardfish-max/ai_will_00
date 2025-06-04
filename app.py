@@ -1,11 +1,11 @@
 import streamlit as st
 import requests
 
-# 取得 GROQ API 金鑰（從 Streamlit Secrets 介面注入）
+# 取得 GROQ API 金鑰（從 Streamlit Secrets 介面匯入）
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
-# 初始問題（Chain-of-Thought 問答起點）
+# 初始問題
 initial_questions = [
     "你希望這份遺囑是寫給誰的？",
     "你有什麼話想對這個人說？",
@@ -23,6 +23,7 @@ if "step" not in st.session_state:
     st.session_state.done = False
     st.session_state.generated = ""
     st.session_state.trigger_next = False
+    st.session_state.followup_added = False  # 避免重複加問題
 
 # Groq API 呼叫函數
 def call_groq(prompt):
@@ -40,7 +41,7 @@ def call_groq(prompt):
     res = requests.post(GROQ_API_URL, headers=headers, json=payload)
     return res.json()["choices"][0]["message"]["content"]
 
-# UI 開始
+# UI 設定
 st.title("🕊 AI您好，我的遺囑如下…")
 st.markdown("這是一個由 AI 協助撰寫遺囑的互動工具，請放心作答，最後會生成一份完整草稿。")
 
@@ -57,43 +58,50 @@ if not st.session_state.done:
         current_q = st.session_state.questions[st.session_state.step]
         st.markdown(f"**問題 {st.session_state.step + 1}：** {current_q}")
         user_input = st.text_input("你的回答：", key=f"input_{st.session_state.step}")
+        
         if st.button("送出回答", key=f"submit_{st.session_state.step}"):
             st.session_state.chat.append({"role": "user", "content": user_input})
             st.session_state.answers.append(user_input)
             st.session_state.step += 1
-            st.session_state.trigger_next = True
+            st.experimental_rerun()
 
-    elif len(st.session_state.questions) == len(initial_questions):
-        # Chain of Thought：讓 AI 提出進一步提問
-        summary = "\\n".join([f"{i+1}. {q}：{a}" for i, (q, a) in enumerate(zip(st.session_state.questions, st.session_state.answers))])
-        follow_prompt = f"以下是使用者關於遺囑的初步回答，請根據內容提出 1~2 個進一步的釐清或補充問題，用中文發問：\\n{summary}"
-        followup = call_groq(follow_prompt)
-        new_questions = [line.strip("-：• ") for line in followup.split("\\n") if line.strip()]
+    # ✅ 當回答完初始問題，觸發延伸提問
+    elif not st.session_state.followup_added:
+        summary = "\n".join([f"{i+1}. {q}：{a}" for i, (q, a) in enumerate(zip(initial_questions, st.session_state.answers))])
+        cot_prompt = f"請根據以下回答，提出 1~2 個可以補充的延伸問題：\n{summary}"
+        follow = call_groq(cot_prompt)
+        new_questions = [q.strip("•-： ") for q in follow.split("\n") if q.strip()]
+        
+        # ✅ 加入延伸問題
         st.session_state.questions.extend(new_questions)
+        st.session_state.chat.append({"role": "assistant", "content": "讓我們深入一點…"})  # 簡單提示
         st.session_state.chat.append({"role": "assistant", "content": new_questions[0]})
-        st.session_state.step += 0  # 等待使用者回答新問題
-        st.session_state.trigger_next = False
-
-    else:
-        st.session_state.done = True
-        st.session_state.trigger_next = True
-
-# 最終生成遺囑
-if st.session_state.done and not st.session_state.generated:
-    full_prompt = "\\n".join([f"{i+1}. {q}：{a}" for i, (q, a) in enumerate(zip(st.session_state.questions, st.session_state.answers))])
-    will_prompt = f"請根據以下資訊幫我生成一份格式化、情感真摯、結尾附上日期的遺囑草稿：\\n{full_prompt}"
-    with st.spinner("🖊️ 正在撰寫遺囑草稿…"):
-        st.session_state.generated = call_groq(will_prompt)
-        st.session_state.chat.append({"role": "assistant", "content": st.session_state.generated})
+        st.session_state.followup_added = True
         st.experimental_rerun()
 
-# 顯示結果
+    # ✅ 所有問題都問完，才進入生成階段
+    elif st.session_state.step == len(st.session_state.questions):
+        st.session_state.done = True
+        st.experimental_rerun()
+
+# ✅ 最終階段：產出遺囑
+if st.session_state.done and not st.session_state.generated:
+    final_prompt = "\n".join([f"{i+1}. {q}：{a}" for i, (q, a) in enumerate(zip(st.session_state.questions, st.session_state.answers))])
+    full_prompt = f"請根據以下資訊，幫我生成一份溫柔但格式清晰的中文遺囑草稿：\n{final_prompt}\n請加上今日日期結尾。"
+
+    with st.spinner("正在生成遺囑草稿…"):
+        result = call_groq(full_prompt)
+        st.session_state.generated = result
+        st.session_state.chat.append({"role": "assistant", "content": result})
+        st.experimental_rerun()
+
+# ✅ 顯示最終草稿
 if st.session_state.generated:
     st.markdown("### 📝 你的遺囑草稿如下：")
     st.success(st.session_state.generated)
 
 # 控制重新載入安全觸發
-if st.session_state.trigger_next:
-    st.session_state.trigger_next = False
-    st.markdown("### 📝 你的遺囑草稿如下：")
-    st.success(st.session_state.generated)
+#if st.session_state.trigger_next:
+#    st.session_state.trigger_next = False
+#    st.markdown("### 📝 你的遺囑草稿如下：")
+#    st.success(st.session_state.generated)
