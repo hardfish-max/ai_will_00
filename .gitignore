@@ -1,0 +1,2 @@
+# 忽略本地 secrets 檔
+.streamlit/secrets.toml
