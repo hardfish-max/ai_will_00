@@ -70,6 +70,12 @@ st.markdown(
         background-size: cover;
         background-attachment: fixed;
     }}
+    
+    /* 強制所有文字為黑色 */
+    html, body, .stApp, .css-18ni7ap, .css-1d391kg, .css-qrbaxs, .css-ffhzg2, .css-1v0mbdj {{
+        color: black !important;
+    }}
+    
     /* 音樂播放器樣式 */
     .audio-player {{
         position: fixed;
