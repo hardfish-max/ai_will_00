@@ -77,18 +77,18 @@ st.markdown(
     }}
     
     /* 所有輸入框、選擇框、文字區塊背景為白，文字為黑 */
-    input, textarea, .stTextInput input, .stTextArea textarea, .stSelectbox, .stMultiSelect, .stNumberInput input {
+    input, textarea, .stTextInput input, .stTextArea textarea, .stSelectbox, .stMultiSelect, .stNumberInput input {{
         background-color: white !important;
         color: black !important;
-    }
+    }}
 
     /* 按鈕樣式 */
-    button, .stButton>button {
+    button, .stButton>button {{
         background-color: white !important;
         color: black !important;
         border: 1px solid #ccc !important;
         border-radius: 8px !important;
-    }
+    }}
     /* 音樂播放器樣式 */
     .audio-player {{
         position: fixed;
