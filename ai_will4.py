@@ -57,7 +57,8 @@ def to_base64(file_path):
         return base64.b64encode(f.read()).decode()
 
 # --- 加入背景圖片與音樂 ---
-image_base64 = to_base64("assets/background (2).png")        
+image_base64 = to_base64("assets/background.jpg")
+#image_base64 = to_base64("assets/background (2).png")        
 audio_base64 = to_base64("assets/echoofsadness.mp3")    
 
 st.markdown(
@@ -126,9 +127,13 @@ if not st.session_state.done:
                 st.rerun() # 提交回答後強制重新運行，顯示下一個問題或進入下一階段
 
     # --- 延伸問題生成邏輯 ---
-    elif not st.session_state.followup_questions_generated:
+# 階段 2: 生成延伸問題的提示階段（僅在生成時顯示資訊，不需回答）
+    # 只有當所有初始問題都回答完，且延伸問題尚未生成時進入此階段
+    elif st.session_state.step == len(st.session_state.initial_questions) and not st.session_state.followup_questions_generated:
         st.info("已回答完主要問題，正在思考為您補充更多細節…")
-        summary = "\n".join([f"{i+1}. {q}：{a}" for i, (q, a) in enumerate(zip(initial_questions, st.session_state.answers))])
+        
+        # 整合所有初始問題的回答作為 AI 生成延伸問題的上下文
+        summary = "\n".join([f"{i+1}. {q}：{a}" for i, (q, a) in enumerate(zip(st.session_state.initial_questions, st.session_state.answers[:len(st.session_state.initial_questions)]))])
         
         cot_prompt = f"請根據以下使用者提供的資訊，提出 **1 到 2 個** 可以幫助其更完善遺囑的**延伸問題**。請確保每個問題都以獨立的一行顯示，並使用清晰的繁體中文提問。例如：\n1. 請問您是否有特別想要指定受益人的比例？\n2. 您希望如何安排您的數位遺產？\n\n使用者提供的資訊：\n{summary}"
         
@@ -136,22 +141,24 @@ if not st.session_state.done:
             follow = call_groq(cot_prompt)
             
         new_questions = [q.strip() for q in follow.split("\n") if q.strip()]
+        new_questions = [q for q in new_questions if q.startswith(('1.', '2.', '3.'))] # 篩選確保是問題格式
         new_questions = new_questions[:2] # 確保只取前兩個問題
 
         if new_questions:
+            # 將新問題添加到總問題列表中，這樣後續的 step 就能處理它們
             st.session_state.questions.extend(new_questions)
-            st.session_state.chat.append({"role": "assistant", "content": "讓我們深入一點，還有幾個問題想請教您…"})
-            st.session_state.followup_questions_generated = True
-            st.rerun() # 生成延伸問題後強制重新運行，以顯示第一個延伸問題
-        else:
-            # 如果沒有生成延伸問題，直接進入完成階段
+            st.session_state.chat.append({"role": "assistant", "content": "好的，我們還有幾個問題想請教您，這能幫助我們完善遺囑…"})
+            st.session_state.followup_questions_generated = True # 標記延伸問題已生成
+            st.rerun() # 強制重新運行，讓 Streamlit 在下一個 step 顯示第一個延伸問題
+
+        else: # 如果沒有生成延伸問題，直接進入完成階段
             st.session_state.done = True
             st.rerun()
 
-    # --- 判斷所有問題是否問完 ---
+    # 階段 3: 所有問題問完，進入最終生成階段
     elif st.session_state.step == len(st.session_state.questions) and not st.session_state.done:
         st.session_state.done = True
-        st.rerun() # 所有問題問完後強制重新運行，進入最終生成階段
+        st.rerun()
 
 # --- 最終階段：產出遺囑 ---
 if st.session_state.done and not st.session_state.generated:
