@@ -19,10 +19,11 @@ initial_questions = [
 if "step" not in st.session_state:
     st.session_state.step = 0
     st.session_state.questions = initial_questions.copy()
-    st.session_state.answers = []
-    st.session_state.chat = []
-    st.session_state.done = False
-    st.session_state.generated = ""
+    st.session_state.initial_questions = initial_questions.copy()
+    st.session_state.answers = []  # 儲存所有回答
+    st.session_state.chat = []     # 儲存對話紀錄
+    st.session_state.done = False  # 標誌是否完成所有問題
+    st.session_state.generated = ""# 最終生成的遺囑草稿
     st.session_state.followup_questions_generated = False # 確保只生成一次延伸問題
     st.session_state.current_user_input = "" # 用於暫存用戶輸入，避免渲染問題
 
