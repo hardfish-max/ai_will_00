@@ -70,6 +70,18 @@ st.markdown(
         background-size: cover;
         background-attachment: fixed;
     }}
+    /* 音樂播放器樣式 */
+    .audio-player {{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 200px;
+        opacity: 0.7;
+        z-index: 1000;
+    }}
+    .audio-player:hover {{
+        opacity: 1.0;
+    }}
     </style>
 
     <audio autoplay loop controls>
