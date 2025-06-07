@@ -211,7 +211,7 @@ with col1:
     if lottie_animation:
         st_lottie(lottie_animation, height=140, key="main_anim")
 
-    st.markdown("<i>💡 「遺囑是對摯愛的最後叮嚀，也是對自己人生的溫柔交代。」</i>", unsafe_allow_html=True)
+    
 
     st.header("🕊️ AI您好，我的遺囑如下…")
     current_step = 1
@@ -220,6 +220,7 @@ with col1:
 
 with col2:
     # 🟨 側欄：說明區塊
+    st.markdown("<i>💡 「遺囑是對摯愛的最後叮嚀，也是對自己人生的溫柔交代。」</i>", unsafe_allow_html=True)
     st.markdown("""
     <div style='background: rgba(255,255,255,0.9); padding: 16px; border-radius: 12px; font-size: 15px; color: #222; box-shadow: 0 0 8px rgba(0,0,0,0.1);'>
         <b>🎶 音樂播放提示：</b><br>
