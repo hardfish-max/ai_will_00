@@ -229,7 +229,7 @@ with col1:
     #if lottie_animation:
     #    st_lottie(lottie_animation, height=140, key="main_anim")
 
-    st.markdown("""
+    
    <div style='font-size:36px; font-weight:bold; color:#222; padding:8px 0;'>
       🕊 AI您好，我的遺囑如下…
    </div>
