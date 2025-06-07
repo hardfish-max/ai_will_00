@@ -16,8 +16,8 @@ initial_questions = [
     "你想以什麼語氣或風格呈現這份遺囑？（例如莊嚴、溫柔、幽默）"
 ]
 
-# --- 頁面設定（可選） ---
-st.set_page_config(page_title="AI 遺囑生成器", page_icon="🕊", layout="centered")
+# --- 頁面設定 ---
+st.set_page_config(page_title="AI 遺囑生成器", page_icon="🕊", layout="wide")
 
 #動畫元素
 def load_lottieurl(url: str):
@@ -31,19 +31,7 @@ def load_lottieurl(url: str):
 lottie_url = "https://lottie.host/8e67f872-e483-4e8c-9b28-6ca11329eb42/rgznX6aYYt.json"
 lottie_animation = load_lottieurl(lottie_url)
 
-# 顯示動畫
-if lottie_animation:
-    st_lottie(
-        lottie_animation,
-        speed=1,
-        reverse=False,
-        loop=True,
-        quality="high",
-        height=300,
-        key="ending_animation"
-    )
-else:
-    st.error("動畫載入失敗，請確認 URL 是否正確。")
+
 
 # --- 初始化 session_state ---
 if "step" not in st.session_state:
@@ -132,9 +120,22 @@ st.markdown(
         min-height: 32px !important;
         display: block !important;
     }}
-    #.audio-player:hover {{
-    #    opacity: 1.0;
-    #}}
+    .audio-player:hover {{
+        opacity: 1.0;
+    }}
+    
+     /*測攔 */
+    .sidebar-container {{
+        position: absolute;
+        top: 120px;
+        right: 40px;
+        width: 300px;
+        background: rgba(255, 255, 255, 0.85);
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 15px;
+        color: #222;
+    }}
     </style>
 
     <div class="audio-player">
@@ -145,36 +146,103 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-# --- UI 設定 ---   
+
+# 顯示動畫
+if lottie_animation:
+    st_lottie(
+        lottie_animation,
+        speed=1,
+        reverse=False,
+        loop=True,
+        quality="high",
+        height=300,
+        key="ending_animation"
+    )
+else:
+    st.error("動畫載入失敗，請確認 URL 是否正確。")
+
+
+
+# --- UI 主視覺區塊 設定 ---   
 # st.title("🕊 AI您好，我的遺囑如下…")
 # st.markdown("這是一個由 AI 協助撰寫遺囑的互動工具，請放心作答，最後會生成一份完整草稿。")
 # st.toast("🎶 本頁有音樂播放器，請善用右下角控制！", icon="🎶") 
+#st.markdown("""
+#<div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
+#    🕊️ <b>歡迎使用 AI 遺囑撰寫小助手</b><br>
+#    本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
+#</div>
+#""", unsafe_allow_html=True)
+
+#st.info("🎶 本頁右下角有背景音樂播放器，讓您在舒適氛圍下進行撰寫。")
+
+#current_step = 1
+#total_steps = 5
+#st.progress(current_step/total_steps, text=f"步驟 {current_step} / {total_steps}")
+
+#st.markdown("""
+#<div style='font-size:16px; color:#555; margin-top:18px; margin-bottom:0;'>
+ #   💡 <i>「遺囑是對摯愛的最後叮嚀，也是對自己人生的溫柔交代。」</i>
+#</div>
+#""", unsafe_allow_html=True)
+
+#with st.expander("❓ 常見問題"):
+ #   st.write("""
+  #      - 撰寫的內容會被保存嗎？  
+  #        不會，所有資料僅用於產生草稿，不會儲存。
+   #     - 可以修改已填寫的答案嗎？  
+   #       可以，每一題都可返回重新填寫。
+   # """)
+
+
+#-----
+# --- 主視覺與歡迎區塊 ---
 st.markdown("""
 <div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
-    🕊️ <b>歡迎使用 AI 遺囑撰寫小助手</b><br>
+    🕊️ <b>AI您好，我的遺囑如下…</b><br>
     本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
 </div>
 """, unsafe_allow_html=True)
 
-st.info("🎶 本頁右下角有背景音樂播放器，讓您在舒適氛圍下進行撰寫。")
+if lottie_animation:
+    st_lottie(lottie_animation, height=140, key="main_anim")
 
-current_step = 1
-total_steps = 5
-st.progress(current_step/total_steps, text=f"步驟 {current_step} / {total_steps}")
-
+# --- 右側提示與說明區塊 ---
+st.markdown("""
+<div class="sidebar-container">
+    <b>🎶 音樂播放說明：</b> 右下角可控制背景音樂開關。<br><br>
+    <b>❓ 常見問題：</b>
+    <ul>
+      <li> 撰寫的內容會被保存嗎？<br>➡ 不會，所有資料僅用於產生草稿，不會儲存。</li>      
+      <li>可否修改答案？<br>➡ 可返回任一題重新填寫。</li>
+    </ul>
+</div>
+""", unsafe_allow_html=True)
+# --- 啟動介面進行互動 ---
 st.markdown("""
 <div style='font-size:16px; color:#555; margin-top:18px; margin-bottom:0;'>
     💡 <i>「遺囑是對摯愛的最後叮嚀，也是對自己人生的溫柔交代。」</i>
 </div>
 """, unsafe_allow_html=True)
 
-with st.expander("❓ 常見問題"):
-    st.write("""
-        - 撰寫的內容會被保存嗎？  
-          不會，所有資料僅用於產生草稿，不會儲存。
-        - 可以修改已填寫的答案嗎？  
-          可以，每一題都可返回重新填寫。
-    """)
+# --- 假設這是步驟一 ---
+st.header("✍️ 步驟一：請描述您想交代的對象與內容")
+st.text_input("請輸入對象（例如：孩子、伴侶、朋友）")
+st.text_area("您想說的話")
+
+# --- 最下方進度條 ---
+current_step = 1
+total_steps = 5
+st.progress(current_step / total_steps, text=f"步驟 {current_step} / {total_steps}")
+
+
+
+
+
+
+
+
+
 
 
 # 顯示對話紀錄
