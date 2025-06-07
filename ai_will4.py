@@ -98,9 +98,15 @@ st.markdown(
         opacity: 0.7;
         z-index: 1000;
     }}
-    .audio-player:hover {{
-        opacity: 1.0;
+    audio {{
+        width: 100% !important;
+        min-width: 180px !important;
+        min-height: 32px !important;
+        display: block !important;
     }}
+    #.audio-player:hover {{
+    #    opacity: 1.0;
+    #}}
     </style>
 
     <div class="audio-player">
