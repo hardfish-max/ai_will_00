@@ -197,43 +197,42 @@ else:
 
 #-----
 # --- 主視覺與歡迎區塊 ---
-st.markdown("""
-<div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
-    🕊️ <b>AI您好，我的遺囑如下…</b><br>
-    本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
-</div>
-""", unsafe_allow_html=True)
+col1, col2 = st.columns([2, 1])  # 左：主畫面，右：提示欄
 
-if lottie_animation:
-    st_lottie(lottie_animation, height=140, key="main_anim")
+with col1:
+    # 🟦 主畫面內容：動畫、標題、進度、問題等
+    st.markdown("""
+    <div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
+        🕊️ <b>AI您好，我的遺囑如下…</b><br>
+        本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
+    </div>
+    """, unsafe_allow_html=True)
 
-# --- 右側提示與說明區塊 ---
-st.markdown("""
-<div class="sidebar-container">
-    <b>🎶 音樂播放說明：</b> 右下角可控制背景音樂開關。<br><br>
-    <b>❓ 常見問題：</b>
-    <ul>
-      <li> 撰寫的內容會被保存嗎？<br>➡ 不會，所有資料僅用於產生草稿，不會儲存。</li>      
-      <li>可否修改答案？<br>➡ 可返回任一題重新填寫。</li>
-    </ul>
-</div>
-""", unsafe_allow_html=True)
-# --- 啟動介面進行互動 ---
-st.markdown("""
-<div style='font-size:16px; color:#555; margin-top:18px; margin-bottom:0;'>
-    💡 <i>「遺囑是對摯愛的最後叮嚀，也是對自己人生的溫柔交代。」</i>
-</div>
-""", unsafe_allow_html=True)
+    if lottie_animation:
+        st_lottie(lottie_animation, height=140, key="main_anim")
 
-# --- 假設這是步驟一 ---
-st.header("✍️ 步驟一：請描述您想交代的對象與內容")
-st.text_input("請輸入對象（例如：孩子、伴侶、朋友）")
-st.text_area("您想說的話")
+    st.markdown("<i>💡 「遺囑是對摯愛的最後叮嚀，也是對自己人生的溫柔交代。」</i>", unsafe_allow_html=True)
 
-# --- 最下方進度條 ---
-current_step = 1
-total_steps = 5
-st.progress(current_step / total_steps, text=f"步驟 {current_step} / {total_steps}")
+    st.header("✍️ 步驟一：請描述您想交代的對象與內容")
+    st.text_input("請輸入對象（例如：孩子、伴侶、朋友）")
+    st.text_area("您想說的話")
+    current_step = 1
+    total_steps = 5
+    st.progress(current_step / total_steps, text=f"步驟 {current_step} / {total_steps}")
+
+with col2:
+    # 🟨 側欄：說明區塊
+    st.markdown("""
+    <div style='background: rgba(255,255,255,0.9); padding: 16px; border-radius: 12px; font-size: 15px; color: #222; box-shadow: 0 0 8px rgba(0,0,0,0.1);'>
+        <b>🎶 音樂播放提示：</b><br>
+        右下角播放器可開啟或暫停背景音樂。<br><br>
+        <b>❓ 常見問題：</b>
+        <ul style='margin-left: -20px;'>
+          <li>內容會儲存嗎？ ➡ 不會。</li>
+          <li>可否修改答案？ ➡ 可返回重新填寫。</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 
