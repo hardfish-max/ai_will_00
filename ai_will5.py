@@ -23,7 +23,7 @@ def load_lottieurl(url: str):
     return r.json()
 
 # ✅ 使用完整的 JSON 連結
-lottie_url = "https://lottie.host/8e67f872-e483-4e8c-9b28-6ca11329eb42/rgznX6aYYt.json"
+lottie_url = "https://lottie.host/fd94a400-754a-44e2-8827-9bab998c0226/Hn4dxE4GYn.lottie"
 lottie_animation = load_lottieurl(lottie_url)
 
 # 顯示動畫
