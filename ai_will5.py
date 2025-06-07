@@ -231,10 +231,9 @@ with col1:
 
     st.markdown("""
    <div style='font-size:36px; font-weight:bold; color:#222; padding:8px 0;'>
-      🕊️ AI您好，我的遺囑如下…
+      🕊 AI您好，我的遺囑如下…
    </div>
 
-   # st.header("🕊️ AI您好，我的遺囑如下…")
     
 
 with col2:
@@ -280,8 +279,16 @@ if not st.session_state.done:
     if st.session_state.step < len(st.session_state.questions):
         current_q = st.session_state.questions[st.session_state.step]
         with col1:
-            st.markdown(f"**問題 {st.session_state.step + 1}：** {current_q}")
-            
+            #st.markdown(f"**問題 {st.session_state.step + 1}：** {current_q}")
+            st.markdown(f"""
+<           div style='font-size:24px; font-weight:bold; margin-bottom:8px; color:#333;'>
+            問題 {st.session_state.step + 1}：{current_q}
+            </div>
+            """, unsafe_allow_html=True)
+
+
+
+           
             # 使用一個佔位符來處理輸入框和按鈕
             # 將輸入框的 current_user_input 從 session_state 中取值
             # 這樣在重新運行時，text_area 的值會保持，直到明確提交。
