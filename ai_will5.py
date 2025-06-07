@@ -198,7 +198,7 @@ col1, col2 = st.columns([2, 1])  # 左：主畫面，右：提示欄
 with col1:
     # 🟦 主畫面內容：動畫、標題、進度、問題等
     #st.markdown("""
-    #<div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
+    #<div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 28px;'>
     #    🕊️ <b>AI您好，我的遺囑如下…</b><br>
     #    本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
     #</div>
