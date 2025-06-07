@@ -285,9 +285,9 @@ if not st.session_state.done:
                     st.session_state.step += 1
                     st.rerun() # 提交回答後強制重新運行，顯示下一個問題或進入下一階段
                 
-            current_step = len(session_state.step)
-            total_steps = 5
-                st.progress(current_step / total_steps, text=f"步驟 {current_step} / {total_steps}")
+            #current_step = len(session_state.step)
+            #total_steps = 5
+             #   st.progress(current_step / total_steps, text=f"步驟 {current_step} / {total_steps}")
     # --- 延伸問題生成邏輯 ---
 # 階段 2: 生成延伸問題的提示階段（僅在生成時顯示資訊，不需回答）
     # 只有當所有初始問題都回答完，且延伸問題尚未生成時進入此階段
