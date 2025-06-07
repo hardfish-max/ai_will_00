@@ -1,4 +1,5 @@
 streamlit
+streamlit_lottie
 requests
 transformers
 torch
