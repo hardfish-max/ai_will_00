@@ -151,14 +151,18 @@ st.markdown(
            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
        </audio>
    </div>
+   <!-- 嘗試強制播放 -->
    <script>
-       window.addEventListener('load', function() {{
-           const music = document.getElementById('bg-music');
-           music.play().catch(function(error) {{
-               console.warn("自動播放失敗，可能受到瀏覽器限制：", error);
-           }});
-       }});
-   </script>
+        window.addEventListener('load', function() {{
+            const music = document.getElementById('bg-music');
+            const playPromise = music.play();
+            if (playPromise !== undefined) {{
+                playPromise.catch(function(error) {{
+                    console.warn("自動播放失敗，瀏覽器可能禁止自動撥放：", error);
+                }});
+            }}
+        }});
+    </script>
     
     """,
     unsafe_allow_html=True
