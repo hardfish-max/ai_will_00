@@ -138,32 +138,11 @@ st.markdown(
     }}
     </style>
    
-   # <div class="audio-player">
-    #    <audio autoplay loop controls>
-    #        <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-    #    </audio>
-   # </div>
-    
-   #####
-   
-   <div class="audio-player">
-       <audio id="bg-music" autoplay loop controls>
-           <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-       </audio>
-   </div>
-   <!-- 嘗試強制播放 -->
-   <script>
-        window.addEventListener('load', function() {{
-            const music = document.getElementById('bg-music');
-            const playPromise = music.play();
-            if (playPromise !== undefined) {{
-                playPromise.catch(function(error) {{
-                    console.warn("自動播放失敗，瀏覽器可能禁止自動撥放：", error);
-                }});
-            }}
-        }});
-    </script>
-    
+    <div class="audio-player">
+        <audio autoplay loop controls>
+            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+        </audio>
+    </div>
     """,
     unsafe_allow_html=True
 )
@@ -281,7 +260,7 @@ if not st.session_state.done:
         with col1:
             #st.markdown(f"**問題 {st.session_state.step + 1}：** {current_q}")
             st.markdown(f"""
-<           div style='font-size:24px; font-weight:bold; margin-bottom:8px; color:#333;'>
+            <div style='font-size:24px; font-weight:bold; margin-bottom:8px; color:#333;'>
             問題 {st.session_state.step + 1}：{current_q}
             </div>
             """, unsafe_allow_html=True)
