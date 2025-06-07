@@ -15,6 +15,10 @@ initial_questions = [
     "是否有任何財產、物品、或資料需要安排？",
     "你想以什麼語氣或風格呈現這份遺囑？（例如莊嚴、溫柔、幽默）"
 ]
+
+# --- 頁面設定（可選） ---
+st.set_page_config(page_title="AI 遺囑生成器", page_icon="🕊", layout="centered")
+
 #動畫元素
 def load_lottieurl(url: str):
     r = requests.get(url)
@@ -75,8 +79,7 @@ def call_groq(prompt):
         st.error(f"呼叫 Groq API 時發生錯誤: {e}")
         return "很抱歉，API 呼叫失敗，請稍後再試。"
       
-# --- 頁面設定（可選） ---
-st.set_page_config(page_title="AI 遺囑生成器", page_icon="🕊", layout="centered")
+
 
 # --- 功能函式：轉檔成 base64 ---
 def to_base64(file_path):
