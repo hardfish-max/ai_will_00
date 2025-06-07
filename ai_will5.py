@@ -1,4 +1,4 @@
-import streamlit as streamlit-lottie
+from streamlit_lottie import st_lottie
 import requests
 import base64 #匯入圖片、音檔
 import st_lottie
