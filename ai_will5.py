@@ -208,8 +208,8 @@ with col1:
     </div>
     """, unsafe_allow_html=True)
 
-    if lottie_animation:
-        st_lottie(lottie_animation, height=140, key="main_anim")
+    #if lottie_animation:
+    #    st_lottie(lottie_animation, height=140, key="main_anim")
 
     
 
