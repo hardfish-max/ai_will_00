@@ -20,7 +20,7 @@ def load_lottieurl(url: str):
     r = requests.get(url)
     if r.status_code != 200:
         return None
-    return r.json()
+    return r.lottie()
 
 # ✅ 使用完整的 JSON 連結
 lottie_url = "https://lottie.host/fd94a400-754a-44e2-8827-9bab998c0226/Hn4dxE4GYn.lottie"
