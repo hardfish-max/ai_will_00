@@ -186,14 +186,6 @@ else:
 #</div>
 #""", unsafe_allow_html=True)
 
-#with st.expander("❓ 常見問題"):
- #   st.write("""
-  #      - 撰寫的內容會被保存嗎？  
-  #        不會，所有資料僅用於產生草稿，不會儲存。
-   #     - 可以修改已填寫的答案嗎？  
-   #       可以，每一題都可返回重新填寫。
-   # """)
-
 
 #-----
 # --- 主視覺與歡迎區塊 ---
@@ -201,22 +193,21 @@ col1, col2 = st.columns([2, 1])  # 左：主畫面，右：提示欄
 
 with col1:
     # 🟦 主畫面內容：動畫、標題、進度、問題等
-    st.markdown("""
-    <div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
-        🕊️ <b>AI您好，我的遺囑如下…</b><br>
-        本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
-    </div>
-    """, unsafe_allow_html=True)
-
+    #st.markdown("""
+    #<div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
+    #    🕊️ <b>AI您好，我的遺囑如下…</b><br>
+    #    本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
+    #</div>
+    #""", unsafe_allow_html=True)
+   
+    # --- 插入動畫 --
     #if lottie_animation:
     #    st_lottie(lottie_animation, height=140, key="main_anim")
 
     
 
     st.header("🕊️ AI您好，我的遺囑如下…")
-    current_step = 1
-    total_steps = 5
-    st.progress(current_step / total_steps, text=f"步驟 {current_step} / {total_steps}")
+    
 
 with col2:
     # 🟨 側欄：說明區塊
@@ -225,20 +216,18 @@ with col2:
     <div style='background: rgba(255,255,255,0.9); padding: 16px; border-radius: 12px; font-size: 15px; color: #222; box-shadow: 0 0 8px rgba(0,0,0,0.1);'>
         <b>🎶 音樂播放提示：</b><br>
         右下角播放器可開啟或暫停背景音樂。<br><br>
-        <b>❓ 常見問題：</b>
-        <ul style='margin-left: -20px;'>
-          <li>內容會儲存嗎？ ➡ 不會。</li>
-          <li>可否修改答案？ ➡ 可返回重新填寫。</li>
-        </ul>
     </div>
-    """, unsafe_allow_html=True)
-    st.toast("🎶 本頁有音樂播放器，請善用右下角控制！", icon="🎶") 
+    """, unsafe_allow_html=True) 
     with st.expander("❓ 常見問題"):
         st.write("""
            - 撰寫的內容會被保存嗎？  
              不會，所有資料僅用於產生草稿，不會儲存。
-           - 可以修改已填寫的答案嗎？  
-            可以，每一題都可返回重新填寫。
+             
+           - 我不知道怎麼開始怎麼辦？  
+             試著先寫一句感謝或道別的話，例如「謝謝你陪我這一生」。
+           - 寫的時候覺得想哭，是正常的嗎？
+             很正常，這是對人生與親情深層的整理，請溫柔對待自己。
+             
          """)
 
 
@@ -296,7 +285,9 @@ if not st.session_state.done:
                     st.session_state.step += 1
                     st.rerun() # 提交回答後強制重新運行，顯示下一個問題或進入下一階段
                 
-
+            current_step = len(session_state.step)
+            total_steps = 5
+                st.progress(current_step / total_steps, text=f"步驟 {current_step} / {total_steps}")
     # --- 延伸問題生成邏輯 ---
 # 階段 2: 生成延伸問題的提示階段（僅在生成時顯示資訊，不需回答）
     # 只有當所有初始問題都回答完，且延伸問題尚未生成時進入此階段
