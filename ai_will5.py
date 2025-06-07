@@ -18,12 +18,13 @@ initial_questions = [
 #動畫元素
 def load_lottieurl(url: str):
     r = requests.get(url)
+    print("Status code:", r.status_code)
     if r.status_code != 200:
         return None
-    return r.lottie()
+    return r.json()
 
 # ✅ 使用完整的 JSON 連結
-lottie_url = "https://lottie.host/fd94a400-754a-44e2-8827-9bab998c0226/Hn4dxE4GYn.lottie"
+lottie_url = "https://lottie.host/8e67f872-e483-4e8c-9b28-6ca11329eb42/rgznX6aYYt.json"
 lottie_animation = load_lottieurl(lottie_url)
 
 # 顯示動畫
