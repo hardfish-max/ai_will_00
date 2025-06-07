@@ -297,6 +297,7 @@ if not st.session_state.done:
             user_input = st.text_area(
                 "您的回答：",
                 key=f"input_{st.session_state.step}",
+                placeholder="請在這裡輸入你的回答⋯⋯",
                 height=100,
                 value=user_input_val # 使用 session_state 中的暫存值
             )
