@@ -1,7 +1,7 @@
 from streamlit_lottie import st_lottie
 import requests
 import base64 #匯入圖片、音檔
-import st_lottie
+
 
 # 取得 GROQ API 金鑰（從 Streamlit Secrets 介面匯入）
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
