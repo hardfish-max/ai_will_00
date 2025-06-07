@@ -108,9 +108,9 @@ st.markdown(
     /* 音樂播放器樣式 */
     .audio-player {{
         position: fixed;
-        bottom: 20px;
+        bottom: 40px;
         right: 20px;
-        width: 400px;
+        width: 500px;
         opacity: 0.7;
         z-index: 1000;
     }}
@@ -143,11 +143,29 @@ st.markdown(
             <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
         </audio>
     </div>
+    
+   #####
+   
+   <div class="audio-player">
+       <audio id="bg-music" autoplay loop controls>
+           <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+       </audio>
+   </div>
+   <script>
+       window.addEventListener('load', function() {{
+           const music = document.getElementById('bg-music');
+           music.play().catch(function(error) {{
+               console.warn("自動播放失敗，可能受到瀏覽器限制：", error);
+           }});
+       }});
+   </script>
+    
     """,
     unsafe_allow_html=True
 )
 
 
+   
 
 
 # 顯示動畫
