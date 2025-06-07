@@ -90,6 +90,7 @@ st.markdown(
         border-radius: 8px !important;
     }}
     /* 音樂播放器樣式 */
+    st.toast("🎶 本頁有音樂播放器，請善用右下角控制！", icon="🎶") 
     .audio-player {{
         position: fixed;
         bottom: 20px;
