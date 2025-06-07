@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import base64 #匯入圖片、音檔
+import st_lottie
 
 # 取得 GROQ API 金鑰（從 Streamlit Secrets 介面匯入）
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
@@ -14,6 +15,15 @@ initial_questions = [
     "是否有任何財產、物品、或資料需要安排？",
     "你想以什麼語氣或風格呈現這份遺囑？（例如莊嚴、溫柔、幽默）"
 ]
+#動畫元素
+def load_lottieurl(url:str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+lottie_bird = load_lottieurl("https://assets4.lottiefiles.com/packages/lf20_e3wq3e1j.json")
+st_lottie(lottie_bird, height=120, key="bird")
 
 # --- 初始化 session_state ---
 if "step" not in st.session_state:
@@ -58,8 +68,7 @@ def to_base64(file_path):
         return base64.b64encode(f.read()).decode()
 
 # --- 加入背景圖片與音樂 ---
-image_base64 = to_base64("assets/background.jpg")
-#image_base64 = to_base64("assets/background (2).png")        
+image_base64 = to_base64("assets/background.jpg")      
 audio_base64 = to_base64("assets/echoofsadness.mp3")    
 
 st.markdown(
@@ -98,9 +107,15 @@ st.markdown(
         opacity: 0.7;
         z-index: 1000;
     }}
-    .audio-player:hover {{
-        opacity: 1.0;
+    audio {{
+        width: 100% !important;
+        min-width: 180px !important;
+        min-height: 32px !important;
+        display: block !important;
     }}
+    #.audio-player:hover {{
+    #    opacity: 1.0;
+    #}}
     </style>
 
     <div class="audio-player">
@@ -111,9 +126,37 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-# --- UI 設定 ---
-st.title("🕊 AI您好，我的遺囑如下…")
-st.markdown("這是一個由 AI 協助撰寫遺囑的互動工具，請放心作答，最後會生成一份完整草稿。")
+# --- UI 設定 ---   
+# st.title("🕊 AI您好，我的遺囑如下…")
+# st.markdown("這是一個由 AI 協助撰寫遺囑的互動工具，請放心作答，最後會生成一份完整草稿。")
+# st.toast("🎶 本頁有音樂播放器，請善用右下角控制！", icon="🎶") 
+st.markdown("""
+<div style='background: linear-gradient(90deg, #f9d423 0%, #ff4e50 100%); padding: 16px; border-radius: 10px; margin-bottom: 24px; color: white; font-size: 22px;'>
+    🕊️ <b>歡迎使用 AI 遺囑撰寫小助手</b><br>
+    本工具將引導您輕鬆撰寫專屬遺囑，過程中所有資料僅供草稿產生，不會被儲存。
+</div>
+""", unsafe_allow_html=True)
+
+st.info("🎶 本頁右下角有背景音樂播放器，讓您在舒適氛圍下進行撰寫。")
+
+current_step = 1
+total_steps = 5
+st.progress(current_step/total_steps, text=f"步驟 {current_step} / {total_steps}")
+
+st.markdown("""
+<div style='font-size:16px; color:#555; margin-top:18px; margin-bottom:0;'>
+    💡 <i>「遺囑是對摯愛的最後叮嚀，也是對自己人生的溫柔交代。」</i>
+</div>
+""", unsafe_allow_html=True)
+
+with st.expander("❓ 常見問題"):
+    st.write("""
+        - 撰寫的內容會被保存嗎？  
+          不會，所有資料僅用於產生草稿，不會儲存。
+        - 可以修改已填寫的答案嗎？  
+          可以，每一題都可返回重新填寫。
+    """)
+
 
 # 顯示對話紀錄
 for entry in st.session_state.chat:
