@@ -110,7 +110,7 @@ st.markdown(
         position: fixed;
         bottom: 20px;
         right: 20px;
-        width: 200px;
+        width: 400px;
         opacity: 0.7;
         z-index: 1000;
     }}
@@ -137,12 +137,26 @@ st.markdown(
         color: #222;
     }}
     </style>
-
-    <div class="audio-player">
-        <audio autoplay loop controls>
-            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-        </audio>
-    </div>
+   st.markdown(f"""
+   <div class="audio-player">
+       <audio id="bg-music" autoplay muted loop controls>
+           <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+       </audio>
+   </div>
+   <script>
+     document.addEventListener('click', function () {{
+         const music = document.getElementById('bg-music');
+         if (music.muted) {{
+             music.muted = false;
+             music.play();
+         }}
+     }}, {{ once: true }});
+   </script>
+    #<div class="audio-player">
+      #  <audio autoplay loop controls>
+        #    <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+       # </audio>
+   # </div>
     """,
     unsafe_allow_html=True
 )
@@ -223,8 +237,9 @@ with col2:
            - 撰寫的內容會被保存嗎？  
              不會，所有資料僅用於產生草稿，不會儲存。
              
-           - 我不知道怎麼開始怎麼辦？  
+           - <我不知道怎麼開始怎麼辦？  
              試著先寫一句感謝或道別的話，例如「謝謝你陪我這一生」。
+             
            - 寫的時候覺得想哭，是正常的嗎？
              很正常，這是對人生與親情深層的整理，請溫柔對待自己。
              
