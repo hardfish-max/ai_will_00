@@ -2,7 +2,7 @@ from streamlit_lottie import st_lottie #動畫
 import requests
 import base64 #匯入圖片、音檔
 import streamlit as st
-
+   
 # 取得 GROQ API 金鑰（從 Streamlit Secrets 介面匯入）
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
@@ -260,39 +260,40 @@ for entry in st.session_state.chat:
 if not st.session_state.done:
     if st.session_state.step < len(st.session_state.questions):
         current_q = st.session_state.questions[st.session_state.step]
-        st.markdown(f"**問題 {st.session_state.step + 1}：** {current_q}")
-        
-        # 使用一個佔位符來處理輸入框和按鈕
-        # 將輸入框的 current_user_input 從 session_state 中取值
-        # 這樣在重新運行時，text_area 的值會保持，直到明確提交。
-        user_input_val = st.session_state.current_user_input
-        
-        user_input = st.text_area(
-            "您的回答：",
-            key=f"input_{st.session_state.step}",
-            height=100,
-            value=user_input_val # 使用 session_state 中的暫存值
-        )
-        
-        # 當 text_area 的值發生變化時，更新 session_state 中的暫存值
-        if user_input != st.session_state.current_user_input:
-            st.session_state.current_user_input = user_input
-            # 注意：這裡不應該直接觸發 rerun，否則會陷入循環
-        
-        # 送出按鈕
-        if st.button("送出回答", key=f"submit_q_{st.session_state.step}"):
-            if st.session_state.current_user_input.strip() == "": # 檢查暫存值
-                st.warning("請輸入您的回答。")
-            else:
-                # 提交回答前，將暫存值添加到 chat 和 answers
-                st.session_state.chat.append({"role": "user", "content": st.session_state.current_user_input})
-                st.session_state.answers.append(st.session_state.current_user_input)
-                
-                # 清空暫存值，為下一個問題做準備
-                st.session_state.current_user_input = "" 
-                
-                st.session_state.step += 1
-                st.rerun() # 提交回答後強制重新運行，顯示下一個問題或進入下一階段
+        with col1:
+            st.markdown(f"**問題 {st.session_state.step + 1}：** {current_q}")
+            
+            # 使用一個佔位符來處理輸入框和按鈕
+            # 將輸入框的 current_user_input 從 session_state 中取值
+            # 這樣在重新運行時，text_area 的值會保持，直到明確提交。
+            user_input_val = st.session_state.current_user_input
+            
+            user_input = st.text_area(
+                "您的回答：",
+                key=f"input_{st.session_state.step}",
+                height=100,
+                value=user_input_val # 使用 session_state 中的暫存值
+            )
+            
+            # 當 text_area 的值發生變化時，更新 session_state 中的暫存值
+            if user_input != st.session_state.current_user_input:
+                st.session_state.current_user_input = user_input
+                # 注意：這裡不應該直接觸發 rerun，否則會陷入循環
+            
+            # 送出按鈕
+            if st.button("送出回答", key=f"submit_q_{st.session_state.step}"):
+                if st.session_state.current_user_input.strip() == "": # 檢查暫存值
+                    st.warning("請輸入您的回答。")
+                else:
+                    # 提交回答前，將暫存值添加到 chat 和 answers
+                    st.session_state.chat.append({"role": "user", "content": st.session_state.current_user_input})
+                    st.session_state.answers.append(st.session_state.current_user_input)
+                    
+                    # 清空暫存值，為下一個問題做準備
+                    st.session_state.current_user_input = "" 
+                    
+                    st.session_state.step += 1
+                    st.rerun() # 提交回答後強制重新運行，顯示下一個問題或進入下一階段
                 
 
     # --- 延伸問題生成邏輯 ---
