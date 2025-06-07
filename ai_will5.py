@@ -15,13 +15,14 @@ initial_questions = [
     "是否有任何財產、物品、或資料需要安排？",
     "你想以什麼語氣或風格呈現這份遺囑？（例如莊嚴、溫柔、幽默）"
 ]
-#動畫元素def load_lottieurl(url: str):
+#動畫元素
+def load_lottieurl(url: str):
     r = requests.get(url)
     if r.status_code != 200:
         return None
     return r.json()
 
-# 你的動畫連結
+# ✅ 使用完整的 JSON 連結
 lottie_url = "https://lottie.host/8e67f872-e483-4e8c-9b28-6ca11329eb42/rgznX6aYYt.json"
 lottie_animation = load_lottieurl(lottie_url)
 
@@ -37,7 +38,7 @@ if lottie_animation:
         key="ending_animation"
     )
 else:
-    st.error("動畫載入失敗，請檢查連結。")
+    st.error("動畫載入失敗，請確認 URL 是否正確。")
 
 # --- 初始化 session_state ---
 if "step" not in st.session_state:
