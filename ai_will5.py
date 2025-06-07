@@ -137,22 +137,7 @@ st.markdown(
         color: #222;
     }}
     </style>
-   st.markdown(f"""
-   <div class="audio-player">
-       <audio id="bg-music" autoplay muted loop controls>
-           <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
-       </audio>
-   </div>
-   <script>
-     document.addEventListener('click', function () {{
-         const music = document.getElementById('bg-music');
-         if (music.muted) {{
-             music.muted = false;
-             music.play();
-         }}
-     }}, {{ once: true }});
-   </script>
-   )
+   
     #<div class="audio-player">
       #  <audio autoplay loop controls>
         #    <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
@@ -161,6 +146,25 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+####
+st.markdown(f"""
+<div class="audio-player">
+    <audio id="bg-music" autoplay muted loop controls>
+        <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+    </audio>
+</div>
+<script>
+  document.addEventListener('click', function () {{
+      const music = document.getElementById('bg-music');
+      if (music.muted) {{
+          music.muted = false;
+          music.play();
+      }}
+  }}, {{ once: true }});
+</script>
+""", unsafe_allow_html=True)
+
 
 # 顯示動畫
 if lottie_animation:
